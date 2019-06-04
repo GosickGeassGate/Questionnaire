@@ -10,7 +10,7 @@
    [for="content"]{vertical-align:top;}
    fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
    #content {width:700px;height:300px}
-   .plus,.minus {width: 20px; height: 20px;}
+   .plus,.minus,.up,.down {width: 20px; height: 20px;}
 </style>
 <script>
 
@@ -21,6 +21,10 @@ function over(id, type){
       document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus_over.png";
    else if(type == "minus")
       document.getElementById(id).childNodes[2].childNodes[0].src = "images\\minus_over.png";
+   else if(type == "up")
+      document.getElementById(id).childNodes[3].childNodes[0].src = "images\\up_over.png";
+   else if(type == "down")
+      document.getElementById(id).childNodes[4].childNodes[0].src = "images\\down_over.png";
 }
 
 function out(id, type){
@@ -28,6 +32,10 @@ function out(id, type){
       document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus.png";
    else if(type == "minus")
       document.getElementById(id).childNodes[2].childNodes[0].src = "images\\minus.png";
+   else if(type == "up")
+      document.getElementById(id).childNodes[3].childNodes[0].src = "images\\up.png";
+   else if(type == "down")
+      document.getElementById(id).childNodes[4].childNodes[0].src = "images\\down.png";
 }
 
 // 插入题目
@@ -41,7 +49,9 @@ function insert(type, click, id) {
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+               "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+               "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
       }
       else{
          var tableId = "RadioButton_" + count;
@@ -49,7 +59,9 @@ function insert(type, click, id) {
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【单选题】</td></tr></thead>" +
             "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
             btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
          else if(click == "question")
@@ -60,7 +72,9 @@ function insert(type, click, id) {
             table.children[1].insertAdjacentHTML("beforeend", 
                "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                   "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+                  "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+                  "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
          }
          count++;
       }
@@ -73,7 +87,9 @@ function insert(type, click, id) {
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+               "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+               "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
       }
       else{
          var tableId = "CheckBox_" + count;
@@ -81,7 +97,9 @@ function insert(type, click, id) {
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【多选题】</td></tr></thead>" + 
             "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
             btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
          else if(click == "question")
@@ -92,7 +110,9 @@ function insert(type, click, id) {
             table.children[1].insertAdjacentHTML("beforeend", 
                "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                   "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+               "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+               "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
          }
          count++;
       }
@@ -112,7 +132,9 @@ function insert(type, click, id) {
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>" + txt + "<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+               "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+               "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
       }
       else{
          var tableId = "RadioMatrix_" + count;
@@ -120,7 +142,9 @@ function insert(type, click, id) {
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【矩阵选择】</td></tr></thead>" + 
             "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
-               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
             btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
          else if(click == "question")
@@ -138,7 +162,9 @@ function insert(type, click, id) {
             table.children[1].insertAdjacentHTML("beforeend",
                "<tr id=\"" + contentId + "\"><td>" + txt + "<input name=\"" + contentId + "\"></td>" +
                   "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
-                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td>" +
+               "<td><img class=\"up\" src=\"images\\up.png\" onClick=\"moveUp('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'up')\" onmouseout=\"out('" + contentId + "', 'up')\"></td>" +
+               "<td><img class=\"down\" src=\"images\\down.png\" onClick=\"moveDown('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'down')\" onmouseout=\"out('" + contentId + "', 'down')\"></td></tr>");
          }
          count++;
       }
@@ -149,7 +175,9 @@ function insert(type, click, id) {
       var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【填空题】</td></tr></thead>" + 
          "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" +
             "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('BlankToFillIn', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
-            "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></table></tbody>";
+            "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
       if(click == "button")
          btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
       else if(click == "question")
@@ -158,13 +186,39 @@ function insert(type, click, id) {
    }
 }
 
-
-// 根据id删除
+// 删除题目或选项
 function deleteById(id){
    var node = document.getElementById(id);
    node.parentNode.removeChild(node);
 }
+
+
+// 上移题目或选项
+function moveUp(id){
+   // 注意：父节点的第一个节点是question(当前节点为content)或title(当前节点为table)
+   var node = document.getElementById(id);
+   var prenode = node.previousElementSibling;
+   if(prenode.previousElementSibling != null){
+      node.parentNode.insertBefore(node, prenode);
+   }
+}
+
+// 下移题目或选项
+function moveDown(id){
+   // 注意：父节点的最后一个子节点是button(当前节点为table)
+   var node = document.getElementById(id);
+   var next = node.nextElementSibling;
+   if(next != null){
+      var nextext = next.nextElementSibling;
+      if(nextext != null)
+         node.parentNode.insertBefore(node, nextext);
+      else if(next.id != "insert_button")
+         node.parentNode.appendChild(node);
+   }
+}
+
 </script>
+
 
 </head>
 <body>
@@ -192,6 +246,17 @@ function deleteById(id){
             </td>
             <td>
                <button type="button" onclick="insert('BlankToFillIn', 'button', 'insert_button')">填空</button>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <input name="save" type="submit" value="保存">
+            </td>
+            <td>
+               <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+            </td>
+            <td>
+               <button name="reset" type="reset">复位</button>
             </td>
          </tr>
       </table>
@@ -304,7 +369,7 @@ function deleteById(id){
          </tbody>
       </table> -->
 
-      <table>
+      <!-- <table>
          <tr>
             <td>
                <input name="save" type="submit" value="保存">
@@ -312,7 +377,7 @@ function deleteById(id){
                <button name="reset" type="reset">复位</button>
             </td>
          </tr>
-      </table>
+      </table> -->
    </form>
 </fieldset>
 
