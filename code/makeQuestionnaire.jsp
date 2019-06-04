@@ -91,10 +91,10 @@ fout.write("<fieldset>\r\n");
                      fout.write("<table>\r\n");
                      for(String content: contents){
                         out.print("<tr><td>");
-                        out.print("<input name=\"" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
+                        out.print("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
                         out.print("</td></tr>");
                         fout.write("<tr>\r\n<td>");
-                        fout.write("<input name=\"" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
+                        fout.write("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
                         fout.write("</td>\r\n</tr>\r\n");
                      }
                      break;
@@ -104,10 +104,10 @@ fout.write("<fieldset>\r\n");
                      fout.write("<table>\r\n");
                      for(String content: contents){
                         out.print("<tr><td>");
-                        out.print("<input name=\"" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
+                        out.print("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
                         out.print("</td></tr>");
                         fout.write("<tr>\r\n<td>");
-                        fout.write("<input name=\"" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
+                        fout.write("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
                         fout.write("</td>\r\n</tr>\r\n");
                      }
                      break;
@@ -130,8 +130,8 @@ fout.write("<fieldset>\r\n");
                            out.print("<td>" + contents.get(i)+ "</td>");   // 打印行选项
                            fout.write("<td>" + contents.get(i)+ "</td>\r\n"); 
                            for(int j = 0; j < col_size; j++){
-                              out.print("<td><input name=\"" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>");
-                              fout.write("<td><input name=\"" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>\r\n");
+                              out.print("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>");
+                              fout.write("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>\r\n");
                            }
                            out.print("</tr>");
                            fout.write("</tr>\r\n");
@@ -141,8 +141,8 @@ fout.write("<fieldset>\r\n");
                      break;
 
                   case "BlankToFillIn":
-                     out.print("<table><tr></td><input name=\"" + question + "\"");
-                     fout.write("<table><tr></td><input name=\"" + question + "\"\r\n");
+                     out.print("<table><tr></td><input name=\"BlankToFillIn\1" + question + "\"</td></tr>");
+                     fout.write("<table><tr></td><input name=\"BlankToFillIn\1" + question + "\"</td></tr>\r\n");
                      break;
                }
                out.print("</table>");
