@@ -1,0 +1,100 @@
+<html>
+<meta charset="utf-8"><head>
+<title>Questionnaire</title>
+<style type="text/css">
+*{font-size:20px;font-family:宋体}
+input[type="text"],textarea {color:#B0B0B0}
+[for="content"]{vertical-align:top;}
+fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
+#content {width:700px;height:300px}
+</style>
+</head>
+<body>
+<fieldset>
+<legend>单身情况调查表</legend>
+<form action="http://localhost:8080/实验/项目/code/analyseQuestionaire.jsp" method="post">
+<table>
+<tr>
+<td>
+1. 请问你是否有女朋友
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td><input name="请问你是否有女朋友" value="是" type="radio" >是</td>
+</tr>
+<tr>
+<td><input name="请问你是否有女朋友" value="否" type="radio" >否</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+2. 请问你喜欢和女朋友一起做什么
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td><input name="请问你喜欢和女朋友一起做什么" value="吃饭" type="checkbox" >吃饭</td>
+</tr>
+<tr>
+<td><input name="请问你喜欢和女朋友一起做什么" value="学习" type="checkbox" >学习</td>
+</tr>
+<tr>
+<td><input name="请问你喜欢和女朋友一起做什么" value="爱做的事" type="checkbox" >爱做的事</td>
+</tr>
+<tr>
+<td><input name="请问你喜欢和女朋友一起做什么" value="不好意思还没有女朋友" type="checkbox" >不好意思还没有女朋友</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+3. 请问你和你的女朋友谁更喜欢谁
+</td>
+</tr>
+</table>
+<table border="1">
+<tr>
+<td></td>
+<td>更多</td>
+<td>一样多</td>
+<td>少一点</td>
+</tr>
+<tr>
+<td>你喜欢她</td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="更多" type="radio" ></td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="一样多" type="radio" ></td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="少一点" type="radio" ></td>
+</tr>
+<tr>
+<td>她喜欢你</td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="更多" type="radio" ></td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="一样多" type="radio" ></td>
+<td><input name="请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="少一点" type="radio" ></td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+4. 请问你觉得你找到/找不到女朋友的原因是
+</td>
+</tr>
+</table>
+<table><tr></td><input name="请问你觉得你找到/找不到女朋友的原因是"
+</table>
+<table>
+<tr>
+<td>
+<input name="save" type="submit" value="保存">
+<input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+<button name="reset" type="reset">复位</button>
+</td>
+</tr>
+</table>
+</form>
+</fieldset>
+</body>
+</html>

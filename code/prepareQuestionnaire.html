@@ -1,0 +1,348 @@
+<!DOCTYPE  html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<title>Questionnaire Make</title>
+<style type="text/css">
+   *{font-size:20px;font-family:宋体}
+   input[type="text"],
+   textarea {color:#B0B0B0}
+   [for="content"]{vertical-align:top;}
+   fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
+   #content {width:700px;height:300px}
+   .plus,.minus {width: 20px; height: 20px;}
+</style>
+<script>
+
+var count = 1; // 题量计数器
+
+function over(id, type){
+   if(type == "plus")
+      document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus_over.png";
+   else if(type == "minus")
+      document.getElementById(id).childNodes[2].childNodes[0].src = "images\\minus_over.png";
+}
+
+function out(id, type){
+   if(type == "plus")
+      document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus.png";
+   else if(type == "minus")
+      document.getElementById(id).childNodes[2].childNodes[0].src = "images\\minus.png";
+}
+
+// 插入题目
+function insert(type, click, id) {
+   var btn = document.getElementById(id);
+   if(type == "RadioButton"){
+      if(click == "content"){
+         var tableId = btn.parentNode.parentNode.id;
+         var i = btn.parentNode.childNodes.length;
+         var contentId = tableId + ".Content_" + i;
+         btn.insertAdjacentHTML("afterend", 
+            "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+      }
+      else{
+         var tableId = "RadioButton_" + count;
+         var questionId = tableId + ".Question";
+         var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【单选题】</td></tr></thead>" +
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+         if(click == "button")
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+         else if(click == "question")
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+         var table = document.getElementById(tableId);
+         for(var i = 1; i <= 2; i++){
+            var contentId = tableId + ".Content_" + i;
+            table.children[1].insertAdjacentHTML("beforeend", 
+               "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
+                  "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+         }
+         count++;
+      }
+   }
+   else if(type == "CheckBox"){
+      if(click == "content"){
+         var tableId = btn.parentNode.parentNode.id;
+         var i = btn.parentNode.childNodes.length;
+         var contentId = tableId + ".Content_" + i;
+         btn.insertAdjacentHTML("afterend", 
+            "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+      }
+      else{
+         var tableId = "CheckBox_" + count;
+         var questionId = tableId + ".Question";
+         var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【多选题】</td></tr></thead>" + 
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+         if(click == "button")
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+         else if(click == "question")
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+         var table = document.getElementById(tableId);
+         for(var i = 1; i <= 2; i++){
+            var contentId = tableId + ".Content_" + i;
+            table.children[1].insertAdjacentHTML("beforeend", 
+               "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
+                  "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+         }
+         count++;
+      }
+   }
+   else if(type == "RadioMatrix"){
+      if(click == "content"){
+         var tableId = btn.parentNode.parentNode.id;
+         var i = btn.parentNode.childNodes.length;
+         if(btn.id.split(".")[1].substr(0, 3) == "Row"){
+            var contentId = tableId + ".RowContent_" + i;
+            var txt = "行选项内容：";
+         }
+         else{
+            var contentId = tableId + ".ColContent_" + i;
+            var txt = "列选项内容：";
+         }
+         btn.insertAdjacentHTML("afterend", 
+            "<tr id=" + contentId + "><td>" + txt + "<input name=" + contentId + "></td>" +
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+      }
+      else{
+         var tableId = "RadioMatrix_" + count;
+         var questionId = tableId + ".Question";
+         var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【矩阵选择】</td></tr></thead>" + 
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+               "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
+               "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></tbody></table>";
+         if(click == "button")
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+         else if(click == "question")
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+         var table = document.getElementById(tableId); 
+         for(var i = 1; i <= 4; i++){
+            if(i <= 2){
+               var contentId = tableId + ".ColContent_" + i;
+               var txt = "列选项内容：";
+            }
+            else{
+               var contentId = tableId + ".RowContent_" + i;
+               var txt = "行选项内容：";
+            }
+            table.children[1].insertAdjacentHTML("beforeend",
+               "<tr id=\"" + contentId + "\"><td>" + txt + "<input name=\"" + contentId + "\"></td>" +
+                  "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
+                  "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'minus')\" onmouseout=\"out('" + contentId + "', 'minus')\"></td></tr>");
+         }
+         count++;
+      }
+   }
+   else if(type == "BlankToFillIn"){
+      var tableId = "BlankToFillIn_" + count;
+      var questionId = tableId + ".Question";
+      var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【填空题】</td></tr></thead>" + 
+         "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" +
+            "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('BlankToFillIn', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
+            "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td></tr></table></tbody>";
+      if(click == "button")
+         btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+      else if(click == "question")
+         btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+      count++;
+   }
+}
+
+
+// 根据id删除
+function deleteById(id){
+   var node = document.getElementById(id);
+   node.parentNode.removeChild(node);
+}
+</script>
+
+</head>
+<body>
+<fieldset>
+   <legend>制作问卷</legend>
+   <form id="form" action="http://localhost:8080/实验/项目/code/makeQuestionnaire.jsp" method="post">
+      <table id="title">
+         <tr>
+            <td>
+               问卷标题：<input name="titleOfQuestionnaire">
+            </td>
+         </tr>
+      </table>
+
+      <table id="insert_button">
+         <tr>
+            <td>
+               <button type="button" onclick="insert('RadioButton', 'button', 'insert_button')">单选</button>
+            </td>
+            <td>
+               <button type="button" onclick="insert('CheckBox', 'button', 'insert_button')">多选</button>
+            </td>
+            <td>
+               <button type="button" onclick="insert('RadioMatrix', 'button', 'insert_button')">矩阵选择</button>
+            </td>
+            <td>
+               <button type="button" onclick="insert('BlankToFillIn', 'button', 'insert_button')">填空</button>
+            </td>
+         </tr>
+      </table>
+
+      <!-- <table id="RadioButton">
+         <thead>
+            <tr>
+               <td>
+                  【单选题】
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  编辑题目：<input name="RadioButton_1.Question">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  选项内容：<input name="RadioButton_1.Content_1">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  选项内容：<input name="RadioButton_1.Content_2">
+               </td>
+            </tr>
+         </tbody>
+      </table>
+
+      <table id="CheckBox">
+         <thead>
+            <tr>
+               <td>
+                  【多选题】
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  编辑题目：<input name="CheckBox_1.Question">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  选项内容：<input name="CheckBox_1.Content_1">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  选项内容：<input name="CheckBox_1.Content_2">
+               </td>
+            </tr>
+         </tbody>
+      </table>
+
+      <table id="RadioMatrix">
+         <thead>
+            <tr>
+               <td>
+                  【矩阵选择】
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  编辑题目：<input name="RadioMatrix_1.Question">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  列选项内容：<input name="RadioMatrix_1.ColContent_1">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  列选项内容：<input name="RadioMatrix_1.ColContent_2">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  行选项内容：<input name="RadioMatrix_1.RowContent_1">
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  行选项内容：<input name="RadioMatrix_1.RowContent_2">
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      
+      <table id="BlankToFillIn">
+         <thead>
+            <tr>
+               <td>
+                  【填空题】
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  编辑题目：<input name="BlankToFillIn_1.Question">
+               </td>
+            </tr>
+         </tbody>
+      </table> -->
+
+      <table>
+         <tr>
+            <td>
+               <input name="save" type="submit" value="保存">
+               <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+               <button name="reset" type="reset">复位</button>
+            </td>
+         </tr>
+      </table>
+   </form>
+</fieldset>
+
+<!-- <script type="text/javascript">
+   function inputClick(target){
+     var value="";
+     if(target.id=="title")
+        value="输入博客标题";
+     if(target.id=="keywords")
+        value="输入关键字";
+     if(target.id=="content")
+        value="在这里输入博客内容";
+
+     if(target.value==''){
+       target.style.color="#B0B0B0";
+       target.value=value;
+     }
+     else 
+     if(target.value==value){
+        target.style.color="#000000";
+        target.value="";
+     }
+   };
+   var f1=function(){inputClick(this);};
+   document.getElementById("title").onclick= f1;
+   document.getElementById("keywords").onclick= f1;
+   document.getElementById("content").onclick= f1;
+   document.getElementById("title").onblur= f1;
+   document.getElementById("keywords").onblur= f1;
+   document.getElementById("content").onblur= f1;
+</script> -->
+</body>
+</html>
