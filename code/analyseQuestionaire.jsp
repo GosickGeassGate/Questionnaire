@@ -29,7 +29,7 @@ out.print("<h1>你提交的内容如下:</h1>");
 int counter = 1;    // 计数器
 String sql = "insert into " + filename + " values";
 Enumeration<String> enums = request.getParameterNames(); 
-while(enums.hasMoreElements()){ 
+while(enums.hasMoreElements()){
     String name=(String)enums.nextElement();
     if(name.split("\1")[0].equals("CheckBox")){ // '\1'作为题目类型和题目内容的一个分隔符号
         String[] groups = request.getParameterValues(name);
@@ -45,7 +45,7 @@ while(enums.hasMoreElements()){
 }
 sql = sql + ");";
 out.println("<div>" + sql + "</div>");
-stmt.execute(sql);
+//stmt.execute(sql);
 
 %>
 
