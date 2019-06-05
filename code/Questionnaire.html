@@ -7,12 +7,13 @@ input[type="text"],textarea {color:#B0B0B0}
 [for="content"]{vertical-align:top;}
 fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
 #content {width:700px;height:300px}
-</style>
+#filename {display: none;}</style>
 </head>
 <body>
 <fieldset>
 <legend>单身情况调查表</legend>
 <form action="http://localhost:8080/实验/项目/code/analyseQuestionaire.jsp" method="post">
+<table id="filename"><tr><td><input name="filename" value="Questionnaire"></td></tr></table>
 <table>
 <tr>
 <td>
@@ -67,19 +68,19 @@ fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
 <td></td>
 <td>更多</td>
 <td>一样多</td>
-<td>少一点</td>
+<td>不够多</td>
 </tr>
 <tr>
 <td>你喜欢她</td>
 <td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="更多" type="radio" ></td>
 <td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="一样多" type="radio" ></td>
-<td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="少一点" type="radio" ></td>
+<td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>你喜欢她" value="不够多" type="radio" ></td>
 </tr>
 <tr>
 <td>她喜欢你</td>
 <td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="更多" type="radio" ></td>
 <td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="一样多" type="radio" ></td>
-<td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="少一点" type="radio" ></td>
+<td><input name="RadioMatrix请问你和你的女朋友谁更喜欢谁>>她喜欢你" value="不够多" type="radio" ></td>
 </tr>
 </table>
 <table>

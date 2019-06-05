@@ -47,16 +47,16 @@ while(enums.hasMoreElements()){
 		}
 		else if(name.contains("Row")){
 			sql = sql + ", Question" + (count++) + " nvarchar(50)";
-			questOut.write(RadioMatrixQuestion + ">>" + request.getParameter(name) + "\r\n");
+			questOut.write("RadioMatrix\1" + RadioMatrixQuestion + ">>" + request.getParameter(name) + "\r\n");
 		}
 	}
 	else if(name.contains("Question")){
 		sql = sql + ", Question" + (count++) + " nvarchar(50)";
-		questOut.write(request.getParameter(name) + "\r\n");
+		questOut.write(name.split("_")[0] + "\1" + request.getParameter(name) + "\r\n");
 	}
 }
 sql = sql + ");";
-//stmt.execute(sql);
+stmt.execute(sql);
 questOut.close();
 
 PrintWriter fout = null;
@@ -77,6 +77,7 @@ fout.write("<html>\r\n" +
 	"[for=\"content\"]{vertical-align:top;}\r\n" + 
 	"fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}\r\n" + 
 	"#content {width:700px;height:300px}\r\n" +
+	"#filename {display: none;}" + 
 	"</style>\r\n" + 
 	"</head>\r\n" +
 	"<body>\r\n");
@@ -87,12 +88,13 @@ fout.write("<html>\r\n" +
 fout.write("<fieldset>\r\n");
 %>
 	<%
-	out.print("<legend>" + request.getParameter("titleOfQuestionnaire") + "</legend>");
-	fout.write("<legend>" + request.getParameter("titleOfQuestionnaire") + "</legend>\r\n");
+	out.print("<legend>" + request.getParameter("title") + "</legend>");
+	fout.write("<legend>" + request.getParameter("title") + "</legend>\r\n");
 	%>
 	<form action="http://localhost:8080/实验/项目/code/analyseQuestionaire.jsp" method="post">
 	<%
 	fout.write("<form action=\"http://localhost:8080/实验/项目/code/analyseQuestionaire.jsp\" method=\"post\">\r\n");
+	fout.write("<table id=\"filename\"><tr><td><input name=\"filename\" value=\"" + filename + "\"></td></tr></table>\r\n");
 	%>
 		<% 
 		Enumeration<String> names = request.getParameterNames();
@@ -103,8 +105,9 @@ fout.write("<fieldset>\r\n");
 		int col_size = 0;       // 矩阵选择列数
 		while(names.hasMoreElements()){
 			String name = (String)names.nextElement();
-			if(name.equals("titleOfQuestionnaire"))
+			if(name.equals("title")){
 				continue;
+			}
 			else{
 				if(type == null){
 				type = name;
@@ -117,78 +120,78 @@ fout.write("<fieldset>\r\n");
 						col_size++;
 				}
 				else{
-				size++;
-				out.print("<table><tr><td>");
-				out.print(size + ". " + question);
-				out.print("</td></tr></table>");
-				fout.write("<table>\r\n<tr>\r\n<td>\r\n");
-				fout.write(size + ". " + question + "\r\n");
-				fout.write("</td>\r\n</tr>\r\n</table>\r\n");
-				switch(type.split("_")[0]){
-					case "RadioButton":
-						out.print("<table>");
-						fout.write("<table>\r\n");
-						for(String content: contents){
-							out.print("<tr><td>");
-							out.print("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
-							out.print("</td></tr>");
-							fout.write("<tr>\r\n<td>");
-							fout.write("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
-							fout.write("</td>\r\n</tr>\r\n");
-						}
-						break;
+					size++;
+					out.print("<table><tr><td>");
+					out.print(size + ". " + question);
+					out.print("</td></tr></table>");
+					fout.write("<table>\r\n<tr>\r\n<td>\r\n");
+					fout.write(size + ". " + question + "\r\n");
+					fout.write("</td>\r\n</tr>\r\n</table>\r\n");
+					switch(type.split("_")[0]){
+						case "RadioButton":
+							out.print("<table>");
+							fout.write("<table>\r\n");
+							for(String content: contents){
+								out.print("<tr><td>");
+								out.print("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
+								out.print("</td></tr>");
+								fout.write("<tr>\r\n<td>");
+								fout.write("<input name=\"RadioButton\1" + question + "\" value=\"" + content + "\" type=\"radio\" >" + content);
+								fout.write("</td>\r\n</tr>\r\n");
+							}
+							break;
 
-					case "CheckBox":
-						out.print("<table>");
-						fout.write("<table>\r\n");
-						for(String content: contents){
-							out.print("<tr><td>");
-							out.print("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
-							out.print("</td></tr>");
-							fout.write("<tr>\r\n<td>");
-							fout.write("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
-							fout.write("</td>\r\n</tr>\r\n");
-						}
-						break;
-					
-					case "RadioMatrix":
-						out.print("<table border=\"1\"><tr><td></td>");   // 第0行第0列为空
-						fout.write("<table border=\"1\">\r\n<tr>\r\n<td></td>\r\n");
-						for(int i = 0; i < contents.size(); i++){
-							if(i < col_size){
-							out.print("<td>" + contents.get(i)+ "</td>");  // 打印列选项
-							fout.write("<td>" + contents.get(i)+ "</td>\r\n");
-							if(i == col_size - 1){
-								out.print("</tr>");  // 换行(结束列选项填充)
+						case "CheckBox":
+							out.print("<table>");
+							fout.write("<table>\r\n");
+							for(String content: contents){
+								out.print("<tr><td>");
+								out.print("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
+								out.print("</td></tr>");
+								fout.write("<tr>\r\n<td>");
+								fout.write("<input name=\"CheckBox\1" + question + "\" value=\"" + content + "\" type=\"checkbox\" >" + content);
+								fout.write("</td>\r\n</tr>\r\n");
+							}
+							break;
+						
+						case "RadioMatrix":
+							out.print("<table border=\"1\"><tr><td></td>");   // 第0行第0列为空
+							fout.write("<table border=\"1\">\r\n<tr>\r\n<td></td>\r\n");
+							for(int i = 0; i < contents.size(); i++){
+								if(i < col_size){
+								out.print("<td>" + contents.get(i)+ "</td>");  // 打印列选项
+								fout.write("<td>" + contents.get(i)+ "</td>\r\n");
+								if(i == col_size - 1){
+									out.print("</tr>");  // 换行(结束列选项填充)
+									fout.write("</tr>\r\n");
+								}
+								}
+								else{
+								out.print("<tr>");
+								fout.write("<tr>\r\n");
+								out.print("<td>" + contents.get(i)+ "</td>");   // 打印行选项
+								fout.write("<td>" + contents.get(i)+ "</td>\r\n"); 
+								for(int j = 0; j < col_size; j++){
+									out.print("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>");
+									fout.write("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>\r\n");
+								}
+								out.print("</tr>");
 								fout.write("</tr>\r\n");
+								}
 							}
-							}
-							else{
-							out.print("<tr>");
-							fout.write("<tr>\r\n");
-							out.print("<td>" + contents.get(i)+ "</td>");   // 打印行选项
-							fout.write("<td>" + contents.get(i)+ "</td>\r\n"); 
-							for(int j = 0; j < col_size; j++){
-								out.print("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>");
-								fout.write("<td><input name=\"RadioMatrix\1" + question + ">>" + contents.get(i)+ "\" value=\"" + contents.get(j) + "\" type=\"radio\" ></td>\r\n");
-							}
-							out.print("</tr>");
-							fout.write("</tr>\r\n");
-							}
-						}
-						col_size = 0;
-						break;
+							col_size = 0;
+							break;
 
-					case "BlankToFillIn":
-						out.print("<table><tr><td><input name=\"BlankToFillIn\1" + question + "\"></td></tr>");
-						fout.write("<table><tr><td><input name=\"BlankToFillIn\1" + question + "\"></td></tr>\r\n");
-						break;
-				}
-				out.print("</table>");
-				fout.write("</table>\r\n");
-				type = name;
-				question = (String)request.getParameter(name);
-				contents.clear();
+						case "BlankToFillIn":
+							out.print("<table><tr><td><input name=\"BlankToFillIn\1" + question + "\"></td></tr>");
+							fout.write("<table><tr><td><input name=\"BlankToFillIn\1" + question + "\"></td></tr>\r\n");
+							break;
+					}
+					out.print("</table>");
+					fout.write("</table>\r\n");
+					type = name;
+					question = (String)request.getParameter(name);
+					contents.clear();
 				}
 			}
 		}

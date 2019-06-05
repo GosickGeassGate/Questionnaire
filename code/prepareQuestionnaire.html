@@ -228,7 +228,7 @@ function moveDown(id){
       <table id="title">
          <tr>
             <td>
-               问卷标题：<input name="titleOfQuestionnaire">
+               问卷标题：<input name="title">
             </td>
          </tr>
       </table>
@@ -256,7 +256,7 @@ function moveDown(id){
                <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
             </td>
             <td>
-               <button name="reset" type="reset">复位</button>
+               <button name="reset" type="reset">重新填写</button>
             </td>
          </tr>
       </table>
@@ -378,6 +378,30 @@ function moveDown(id){
             </td>
          </tr>
       </table> -->
+   </form>
+</fieldset>
+
+<fieldset>
+   <legend>查看问卷提交结果</legend>
+   <form action="http://localhost:8080/实验/项目/code/getResult.jsp" method="post">
+      <table id="BlankToFillIn">
+         <thead>
+            <tr>
+               <td>
+                  请输入问卷名：<input name="name">
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  <input name="save" type="submit" value="查找">
+                  <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+                  <button name="reset" type="reset">清除</button>
+               </td>
+            </tr>
+         </tbody>
+      </table>
    </form>
 </fieldset>
 
