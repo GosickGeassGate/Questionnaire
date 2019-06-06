@@ -12,9 +12,8 @@
 </style>
 </head>
 <body>
+<fieldset>
 <%
-String filename = "Questionnaire";	// 问卷文件名，也用作数据库表名
-
 String DBDRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
 String DBURL="jdbc:sqlserver://127.0.0.1:1433;databaseName=questionnaire";
 String DBUSER="sa";
@@ -22,11 +21,23 @@ String PASSWORD="123456";
 
 Class.forName(DBDRIVER);
 Connection conn = DriverManager.getConnection(DBURL, DBUSER, PASSWORD);
-out.println("<div>连接数据库成功</div>");
+//out.println("<div>连接数据库成功</div>");
 Statement state = conn.createStatement();
 Statement stmt=conn.createStatement();
-String sql = "create table " + filename + "(id int IDENTITY(1,1)";
 
+Random rand = new Random();
+int id = rand.nextInt(10000);	// 在0~10000中选取随机值
+String sql = "select * from Manager where id = " + id;
+ResultSet rs = stmt.executeQuery(sql);
+while(rs.next()){
+	id = rand.nextInt(10000);
+	rs = stmt.executeQuery(sql);
+}
+String filename = "Questionnaire" + id;	// 问卷文件名，也用作数据库表名
+sql = "insert into Manager values(" + id + ");";
+stmt.execute(sql);
+
+sql = "create table " + filename + "(id int IDENTITY(1,1)";
 PrintWriter questOut = null;
 try {
    	questOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("D:\\Data\\Web\\实验\\项目\\code\\" + filename + ".txt"),"utf-8")));
@@ -34,13 +45,16 @@ try {
    	e.printStackTrace();
 }
 
-out.print("<h1>你提交的内容如下:</h1>");
+//out.print("<h1>你提交的内容如下:</h1>");
 Enumeration<String> enums = request.getParameterNames();
 String RadioMatrixQuestion = null;
 int count = 1;	// 计数器
 while(enums.hasMoreElements()){ 
 	String name = (String)enums.nextElement();
-	out.println(name + ":" + request.getParameter(name) + "<br />");
+	//out.println(name + ":" + request.getParameter(name) + "<br />");
+	if(name.equals("title")){
+		questOut.write("title\1" + request.getParameter(name) + "\r\n");
+	}
 	if(name.contains("RadioMatrix")){
 		if(name.contains("Question")){
 			RadioMatrixQuestion = request.getParameter(name);
@@ -121,12 +135,12 @@ fout.write("<fieldset>\r\n");
 				}
 				else{
 					size++;
-					out.print("<table><tr><td>");
+					out.print("<table><tr><td><b>");
 					out.print(size + ". " + question);
-					out.print("</td></tr></table>");
-					fout.write("<table>\r\n<tr>\r\n<td>\r\n");
-					fout.write(size + ". " + question + "\r\n");
-					fout.write("</td>\r\n</tr>\r\n</table>\r\n");
+					out.print("</b></td></tr></table>");
+					fout.write("<table>\r\n<tr>\r\n<td>\r\n<b>");
+					fout.write(size + ". " + question);
+					fout.write("<b>\r\n</td>\r\n</tr>\r\n</table>\r\n");
 					switch(type.split("_")[0]){
 						case "RadioButton":
 							out.print("<table>");
@@ -209,12 +223,16 @@ fout.write("<fieldset>\r\n");
 </fieldset>
 <div>
 问卷链接：
-<a href="http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/Questionnaire.html">
-http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/Questionnaire.html
-</a>
+<%
+out.println("<a href=\"http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/" + filename + ".html\">");
+out.println("http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/" + filename + ".html</a>");
+%>
 </div>
-</body>
-</html>
+<div>
+<%
+out.println("请务必记住问卷结果提取码：" + id);
+%>
+</div>
 <%
 fout.write("<table>\r\n" + 
    "<tr>\r\n" + 
@@ -232,122 +250,3 @@ fout.write("<table>\r\n" +
 fout.close();
 %>
 
-
-<%-- <fieldset>
-   <legend>修改博客</legend>
-   <form action="http://localhost:8080/实验/项目/code/edit.jsp" method="post">
-      <table>
-         <tr>
-            <td>
-               标题：
-               <%
-               out.println("<input id=\"title\" name=\"title\" value=" + request.getParameter("title") + " >");
-               %>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               关键字：
-               <%
-               out.println("<input id=\"keywords\" name=\"keywords\" value=" + request.getParameter("keywords") + " >");
-               %>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               布局：
-               <%
-               for(int i = 1; i <= 3; i++){
-                  String layout = "layout" + i;
-                  out.print("<input name=\"layout\" type=\"radio\" value=\"" + layout + "\"");
-                  if(request.getParameter("layout").equals(layout)){
-                     out.print(" checked");
-                  }
-                  out.println("><img src=\"" + layout + ".jpg\">");
-               }
-               %>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               背景：<select name="background">
-                  <optgroup>
-                     <%
-                     for(int i = 1; i <= 4; i++){
-                        out.print("<option value=\"bk" + i + "\"");
-                        if(request.getParameter("background").equals("bk" + i)){
-                           out.print(" checked");
-                        }
-                        out.println(">背景" + i + "</option>");
-                     }
-                     %>
-                  </optgroup>
-               </select>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               适合群体：
-               <%
-               String []select = request.getParameterValues("group");
-               String []groups = {"学前班", "小学生", "中学生", "成年人"};
-               for(int i = 1; i <= 4; i++){
-                  out.print("<input name=\"group\" type=\"checkbox\" value=\"grp" + i + "\"");
-                  for(int j = 0; j < select.length; j++){
-                     if(select[j].equals("grp" + i)){
-                        out.print(" checked");
-                        break;
-                     }
-                  }
-                  out.println(">" + groups[i - 1]);
-               }
-               %>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               内容：
-               <%
-               out.println("<textarea id=\"content\" name=\"content\">" + request.getParameter("content") + "</textarea>");
-               %>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               <input name="save" type="submit" value="保存">
-               <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
-               <button name="reset" type="reset">复位</button>
-            </td>
-         </tr>
-      </table>
-   </form>
-</fieldset>
-
-<script type="text/javascript">
-   function inputClick(target){
-     var value="";
-     if(target.id=="title")
-        value="输入博客标题";
-     if(target.id=="keywords")
-        value="输入关键字";
-     if(target.id=="content")
-        value="在这里输入博客内容";
-
-     if(target.value==''){
-       target.style.color="#B0B0B0";
-       target.value=value;
-     }
-     else 
-     if(target.value==value){
-        target.style.color="#000000";
-        target.value="";
-     }
-   };
-   var f1=function(){inputClick(this);};
-   document.getElementById("title").onclick= f1;
-   document.getElementById("keywords").onclick= f1;
-   document.getElementById("content").onclick= f1;
-   document.getElementById("title").onblur= f1;
-   document.getElementById("keywords").onblur= f1;
-   document.getElementById("content").onblur= f1;
-</script> --%>

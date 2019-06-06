@@ -1,21 +1,39 @@
 <%@ page language="java" import="java.util.*,java.io.*,java.sql.*,java.text.*" contentType="text/html; charset=utf-8" %>
+<html>
+<head>
+<title>Result</title>
+<style type="text/css">
+	*{font-size:20px;font-family:宋体}
+	input[type="text"],textarea {color:#B0B0B0}
+	[for="content"]{vertical-align:top;}
+	fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
+</style>
 <% 
 request.setCharacterEncoding("utf-8");
-String filename = request.getParameter("name");
+String id = request.getParameter("id");
+String filename = "Questionnaire" + id;
 
 Map<String, String> questionMap = new HashMap<String, String>();    // 数据库表的列名与问题内容的映射
+String title = "";
 BufferedReader reader = null;
 int line = 0;
 try {
    	reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("D:\\Data\\Web\\实验\\项目\\code\\" + filename + ".txt")), "utf-8"));
     String str = null;  // 缓存每一行内容
     while((str = reader.readLine()) != null){
-        questionMap.put("Question" + (++line), str);
+        if(str.split("\1")[0].equals("title")){
+            title = str.split("\1")[1];
+        }
+        else{
+            questionMap.put("Question" + (++line), str);
+        }
         //out.println("<div>" + str + "</div>");
     }
     reader.close();
 } catch (Exception e) {
-   	out.println("<div>问卷不存在</div>");
+   	//out.println("<div>问卷不存在</div>");
+    out.println("<script>alert(\"问卷不存在\");</script>");
+    return;
 }
 List<ArrayList<String>> answerList = new ArrayList<ArrayList<String>>();    // 答案列表
 List<HashMap<String, Integer>> answerCount = new ArrayList<HashMap<String, Integer>>();  // 答案统计
@@ -62,11 +80,26 @@ while(rs.next()){
         }
     }
 }
+
+out.println("</head><body><fieldset><legend>" + title + "</legend>");
 int size = answerList.get(0).size();
 NumberFormat format = NumberFormat.getPercentInstance();
 format.setMaximumFractionDigits(2); //设置保留2位小数
 for(int i = 1; i <= line; i++){
-    out.println("<p>" + questionMap.get("Question" + i) + "<br/>");
+    out.print("<p>" + i + ". " + questionMap.get("Question" + i).split("\1")[1]);
+    switch(questionMap.get("Question" + i).split("\1")[0]){
+        case "RadioButton":
+            out.println("（单选）" + "<br/>");
+            break;
+        case "CheckBox":
+            out.println("（多选）" + "<br/>");
+            break;
+        case "RadioMatrix":
+            out.println("（矩阵选择）" + "<br/>");
+            break;
+        case "BlankToFillIn":
+            out.println("（填空）" + "<br/>");
+    }
     for(String answer: answerCount.get(i - 1).keySet()){
         out.println(answer + ": " + format.format((double)(answerCount.get(i - 1).get(answer)) / size) + "<br/>");
     }
@@ -95,3 +128,6 @@ writer.close();
 out.print("<p>获取具体答案表格：<a href=\"http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/" + filename + ".csv\">" +
     "http://localhost:8080/%E5%AE%9E%E9%AA%8C/%E9%A1%B9%E7%9B%AE/code/" + filename + ".csv</a></p>");
 %>
+</fieldset>
+</body>
+</html>
