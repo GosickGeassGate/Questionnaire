@@ -45,7 +45,7 @@ while(enums.hasMoreElements()){
 }
 sql = sql + ");";
 out.println("<div>" + sql + "</div>");
-//stmt.execute(sql);
+stmt.execute(sql);
 
 %>
 
