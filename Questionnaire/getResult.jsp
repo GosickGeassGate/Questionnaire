@@ -8,15 +8,17 @@
 	[for="content"]{vertical-align:top;}
 	fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
 </style>
+
 <% 
 request.setCharacterEncoding("utf-8");
 String id = request.getParameter("id");
 String filename = "Questionnaire" + id;
 
 Map<String, String> questionMap = new HashMap<String, String>();    // 数据库表的列名与问题内容的映射
-String title = "";
+String title = "";  // 问卷标题
 BufferedReader reader = null;
 int line = 0;
+// 获取问题内容
 try {
    	reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:\\apache-tomcat-8.5.41\\webapps\\ROOT\\Questionnaire\\" + filename + ".txt")), "utf-8"));
     String str = null;  // 缓存每一行内容
@@ -27,7 +29,6 @@ try {
         else{
             questionMap.put("Question" + (++line), str);
         }
-        //out.println("<div>" + str + "</div>");
     }
     reader.close();
 } catch (Exception e) {
@@ -35,9 +36,10 @@ try {
     out.println("<script>alert(\"问卷不存在\");</script>");
     return;
 }
+
 List<ArrayList<String>> answerList = new ArrayList<ArrayList<String>>();    // 答案列表
 List<HashMap<String, Integer>> answerCount = new ArrayList<HashMap<String, Integer>>();  // 答案统计
-for(int i = 0; i < line; i++){
+for(int i = 0; i < line; i++){  // 初始化
     ArrayList<String> list = new ArrayList<String>();
     answerList.add(list);
     HashMap<String, Integer> map = new HashMap<String, Integer>();
@@ -54,13 +56,14 @@ Connection conn = DriverManager.getConnection(DBURL, DBUSER, PASSWORD);
 //out.println("<div>连接数据库成功</div>");
 Statement stmt = conn.createStatement();    // 创建MySQL语句的对象
 ResultSet rs = stmt.executeQuery("select * from " + filename);  //执行查询，返回结果集
+// 从数据库中获取问卷答案
 while(rs.next()){
     for(int i = 1; i <= line; i++){
         String answer = rs.getString("Question" + i);
         answerList.get(i - 1).add(answer);
 
-        if(questionMap.get("Question" + i).split("\1")[0].equals("CheckBox")){
-            String[] answers = answer.substring(1, answer.length() - 1).split(","); // 去掉方括号再根据逗号分隔
+        if(questionMap.get("Question" + i).split("\1")[0].equals("CheckBox")){  // 如果是多选题
+            String[] answers = answer.substring(1, answer.length() - 1).split(","); // 去掉方括号再根据逗号分隔（因为存储的是数组）
             for(int j = 0; j < answers.length; j++){
                 if(answerCount.get(i - 1).keySet().contains(answers[j])){
                     answerCount.get(i - 1).put(answers[j], answerCount.get(i - 1).get(answers[j]) + 1);
@@ -81,10 +84,12 @@ while(rs.next()){
     }
 }
 
+// 在网页上显示问题及其答案
 out.println("</head><body><fieldset><legend>" + title + "</legend>");
-int size = answerList.get(0).size();
+int size = answerList.get(0).size();    // 答案个数
 NumberFormat format = NumberFormat.getPercentInstance();
-format.setMaximumFractionDigits(2); //设置保留2位小数
+format.setMaximumFractionDigits(2);     //设置保留2位小数
+out.println("<p>问卷有效填写份数：" + size + "</p>");
 for(int i = 1; i <= line; i++){
     out.print("<p>" + i + ". " + questionMap.get("Question" + i).split("\1")[1]);
     switch(questionMap.get("Question" + i).split("\1")[0]){
@@ -100,15 +105,19 @@ for(int i = 1; i <= line; i++){
         case "BlankToFillIn":
             out.println("（填空）" + "<br/>");
     }
+    out.println("答案统计：<br/>");
+    int j = 1;  // 答案序号
     for(String answer: answerCount.get(i - 1).keySet()){
-        out.println(answer + ": " + format.format((double)(answerCount.get(i - 1).get(answer)) / size) + "<br/>");
+        int times = answerCount.get(i - 1).get(answer);     // 答案填写次数
+        out.println("（" + (j++) + "）" + answer + "&nbsp;填写次数：" + times + "&nbsp;占比：" + format.format((double)(times) / size) + "<br/>");  // 统计百分比
     }
-    for(String answer: answerList.get(i - 1)){
-        out.println(answer + "<br/>");
-    }
+//    for(String answer: answerList.get(i - 1)){
+//        out.println(answer + "<br/>");  // 打印每一个答案
+//    }
     out.println("</p>");
 }
 
+// 将问卷答案写到csv文件中
 PrintWriter writer = null;
 try {
    	writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:\\apache-tomcat-8.5.41\\webapps\\ROOT\\Questionnaire\\" + filename + ".csv"),"gbk")));

@@ -1,0 +1,44 @@
+<html>
+<meta charset="utf-8"><head>
+<title>Questionnaire</title>
+<style type="text/css">
+*{font-size:20px;font-family:宋体}
+input[type="text"],textarea {color:#B0B0B0}
+[for="content"]{vertical-align:top;}
+fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
+#content {width:700px;height:300px}
+#filename {display: none;}</style>
+</head>
+<body>
+<fieldset>
+<legend>测试问卷</legend>
+<form action="http://129.211.94.198:8080/Questionnaire/analyseQuestionaire.jsp" method="post">
+<table id="filename"><tr><td><input name="filename" value="Questionnaire8026"></td></tr></table>
+<table>
+<tr>
+<td>
+<b>1. 是否正常<b>
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<td><input name="RadioButton是否正常" value="是" type="radio" >是</td>
+</tr>
+<tr>
+<td><input name="RadioButton是否正常" value="否" type="radio" >否</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>
+<input name="save" type="submit" value="保存">
+<input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+<button name="reset" type="reset">复位</button>
+</td>
+</tr>
+</table>
+</form>
+</fieldset>
+</body>
+</html>

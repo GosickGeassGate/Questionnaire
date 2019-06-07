@@ -9,6 +9,7 @@
 	[for="content"]{vertical-align:top;}
 	fieldset {width:800px;margin:20px auto;padding:20px;background-color:#FCFCFF;}
 	#content {width:700px;height:300px}
+	#filename {display: none;}
 </style>
 </head>
 <body>
@@ -108,6 +109,7 @@ fout.write("<fieldset>\r\n");
 	<form action="http://129.211.94.198:8080/Questionnaire/analyseQuestionaire.jsp" method="post">
 	<%
 	fout.write("<form action=\"http://129.211.94.198:8080/Questionnaire/analyseQuestionaire.jsp\" method=\"post\">\r\n");
+	out.print("<table id=\"filename\"><tr><td><input name=\"filename\" value=\"" + filename + "\"></td></tr></table>\r\n");
 	fout.write("<table id=\"filename\"><tr><td><input name=\"filename\" value=\"" + filename + "\"></td></tr></table>\r\n");
 	%>
 		<% 
@@ -124,14 +126,14 @@ fout.write("<fieldset>\r\n");
 			}
 			else{
 				if(type == null){
-				type = name;
-				question = (String)request.getParameter(name);
+					type = name;
+					question = (String)request.getParameter(name);
 				}
 				else if(name.matches(type.replace("Question", "[0-9A-Za-z_]{0,}"))){
-				contents.add(request.getParameter(name));
-				if(name.split("_")[0].equals("RadioMatrix"))
-					if(name.split("\\.")[1].substring(0, 3).equals("Col"))
-						col_size++;
+					contents.add(request.getParameter(name));
+					if(name.split("_")[0].equals("RadioMatrix"))
+						if(name.split("\\.")[1].substring(0, 3).equals("Col"))
+							col_size++;
 				}
 				else{
 					size++;
@@ -221,18 +223,6 @@ fout.write("<fieldset>\r\n");
 		</table>
 	</form>
 </fieldset>
-<div>
-问卷链接：
-<%
-out.println("<a href=\"http://129.211.94.198:8080/Questionnaire/" + filename + ".html\">");
-out.println("http://129.211.94.198:8080/Questionnaire/code/" + filename + ".html</a>");
-%>
-</div>
-<div>
-<%
-out.println("请务必记住问卷结果提取码：" + id);
-%>
-</div>
 <%
 fout.write("<table>\r\n" + 
    "<tr>\r\n" + 
@@ -249,4 +239,41 @@ fout.write("<table>\r\n" +
    "</html>\r\n");
 fout.close();
 %>
+<p>
+问卷链接：
+<%
+out.println("<a href=\"http://129.211.94.198:8080/Questionnaire/" + filename + ".html\">");
+out.println("http://129.211.94.198:8080/Questionnaire/code/" + filename + ".html</a>");
+%>
+</p>
+<p>
+<%
+out.println("请务必记住问卷结果提取码：" + id);
+%>
+</p>
+<fieldset>
+   <legend>查看问卷提交结果</legend>
+   <form action="http://129.211.94.198:8080/Questionnaire/getResult.jsp" method="post">
+      <table id="BlankToFillIn">
+         <thead>
+            <tr>
+               <td>
+                  请输入提取码：<input name="id">
+               </td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>
+                  <input name="search" type="submit" value="查找">
+                  <input name="exit" type="button" value="退出" onclick="window.close();document.write('<n>')">
+                  <button name="reset" type="reset">清除</button>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </form>
+</fieldset>
+</fieldset>
+</body>
 
