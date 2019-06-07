@@ -63,7 +63,7 @@ while(rs.next()){
         answerList.get(i - 1).add(answer);
 
         if(questionMap.get("Question" + i).split("\1")[0].equals("CheckBox")){  // 如果是多选题
-            String[] answers = answer.substring(1, answer.length() - 1).split(","); // 去掉方括号再根据逗号分隔（因为存储的是数组）
+            String[] answers = answer.substring(1, answer.length() - 1).split(", "); // 去掉方括号再根据逗号分隔（因为存储的是数组）
             for(int j = 0; j < answers.length; j++){
                 if(answerCount.get(i - 1).keySet().contains(answers[j])){
                     answerCount.get(i - 1).put(answers[j], answerCount.get(i - 1).get(answers[j]) + 1);
