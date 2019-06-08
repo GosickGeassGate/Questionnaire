@@ -16,6 +16,7 @@
 
 var count = 1; // 题量计数器
 
+// 鼠标悬停（按键变成红色）
 function over(id, type){
    if(type == "plus")
       document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus_over.png";
@@ -27,6 +28,7 @@ function over(id, type){
       document.getElementById(id).childNodes[4].childNodes[0].src = "images\\down_over.png";
 }
 
+// 鼠标移走（按键恢复灰色）
 function out(id, type){
    if(type == "plus")
       document.getElementById(id).childNodes[1].childNodes[0].src = "images\\plus.png";
@@ -44,8 +46,14 @@ function insert(type, click, id) {
    if(type == "RadioButton"){
       if(click == "content"){
          var tableId = btn.parentNode.parentNode.id;
-         var i = btn.parentNode.childNodes.length;
-         var contentId = tableId + ".Content_" + i;
+         var max = 0; // 找出最大的选项id，用于生成新的id(+1)
+         for(var i = 0; i < btn.parentNode.childNodes.length; i++){
+            var index = parseInt(btn.parentNode.childNodes[i].id.split(".Content_")[1]);
+            if(max < index)
+               max = index;
+         }
+         var contentId = tableId + ".Content_" + (++max);
+         // 向后插入表格（点击选项加号键）
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
@@ -63,9 +71,9 @@ function insert(type, click, id) {
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
-            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格（点击题目插入键）
          else if(click == "question")
-            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格（点击题目加号键）
          var table = document.getElementById(tableId);
          for(var i = 1; i <= 2; i++){
             var contentId = tableId + ".Content_" + i;
@@ -82,8 +90,14 @@ function insert(type, click, id) {
    else if(type == "CheckBox"){
       if(click == "content"){
          var tableId = btn.parentNode.parentNode.id;
-         var i = btn.parentNode.childNodes.length;
-         var contentId = tableId + ".Content_" + i;
+         var max = 0; // 找出最大的选项id，用于生成新的id(+1)
+         for(var i = 0; i < btn.parentNode.childNodes.length; i++){
+            var index = parseInt(btn.parentNode.childNodes[i].id.split(".Content_")[1]);
+            if(max < index)
+               max = index;
+         }
+         var contentId = tableId + ".Content_" + (++max);
+         // 向后插入表格（点击选项加号键）
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>选项内容：<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
@@ -101,9 +115,9 @@ function insert(type, click, id) {
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
-            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格（点击题目插入键）
          else if(click == "question")
-            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格（点击题目加号键）
          var table = document.getElementById(tableId);
          for(var i = 1; i <= 2; i++){
             var contentId = tableId + ".Content_" + i;
@@ -120,15 +134,21 @@ function insert(type, click, id) {
    else if(type == "RadioMatrix"){
       if(click == "content"){
          var tableId = btn.parentNode.parentNode.id;
-         var i = btn.parentNode.childNodes.length;
+         var max = 0; // 找出最大的选项id，用于生成新的id(+1)
+         for(var i = 0; i < btn.parentNode.childNodes.length; i++){
+            var index = parseInt(btn.parentNode.childNodes[i].id.split(".Content_")[1]);
+            if(max < index)
+               max = index;
+         }
          if(btn.id.split(".")[1].substr(0, 3) == "Row"){
-            var contentId = tableId + ".RowContent_" + i;
+            var contentId = tableId + ".RowContent_" + (++max);
             var txt = "行选项内容：";
          }
          else{
-            var contentId = tableId + ".ColContent_" + i;
+            var contentId = tableId + ".ColContent_" + (++max);
             var txt = "列选项内容：";
          }
+         // 向后插入表格（点击选项加号键）
          btn.insertAdjacentHTML("afterend", 
             "<tr id=" + contentId + "><td>" + txt + "<input name=" + contentId + "></td>" +
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'content', '" + contentId + "')\" onmouseover=\"over('" + contentId + "', 'plus')\" onmouseout=\"out('" + contentId + "', 'plus')\"></td>" +
@@ -146,9 +166,9 @@ function insert(type, click, id) {
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
          if(click == "button")
-            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+            btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格（点击问题插入键）
          else if(click == "question")
-            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+            btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格（点击问题加号键）
          var table = document.getElementById(tableId); 
          for(var i = 1; i <= 4; i++){
             if(i <= 2){
@@ -179,9 +199,9 @@ function insert(type, click, id) {
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\down.png\" onClick=\"moveDown('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'down')\" onmouseout=\"out('" + questionId + "', 'down')\"></td></tr></tbody></table>";
       if(click == "button")
-         btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格
+         btn.insertAdjacentHTML("beforebegin", tableHtml);  // 向前插入表格（点击问题插入键）
       else if(click == "question")
-         btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格
+         btn.insertAdjacentHTML("afterend", tableHtml);     // 向后插入表格（点击问题加号键）
       count++;
    }
 }

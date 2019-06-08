@@ -1,0 +1,13 @@
+title第五人格游戏角色评价调查表
+BlankToFillIn请问你所在的省份是
+RadioButton请问你常用的阵营是
+CheckBox请问你觉得以下角色有哪些是理想的修机位
+CheckBox请问你觉得以下角色有哪些是理想的救人位
+CheckBox请问你觉得以下角色有哪些是理想的溜鬼位
+RadioMatrix请你选择以下角色的使用频率>>厂长
+RadioMatrix请你选择以下角色的使用频率>>鹿头
+RadioMatrix请你选择以下角色的使用频率>>杰克
+RadioMatrix请你选择以下角色的使用频率>>蜘蛛
+RadioMatrix请你选择以下角色的使用频率>>红蝶
+RadioMatrix请你选择以下角色的使用频率>>黄衣之主
+RadioMatrix请你选择以下角色的使用频率>>黑白无常
