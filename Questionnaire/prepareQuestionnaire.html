@@ -65,7 +65,7 @@ function insert(type, click, id) {
          var tableId = "RadioButton_" + count;
          var questionId = tableId + ".Question";
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【单选题】</td></tr></thead>" +
-            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑问题：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioButton', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
@@ -109,7 +109,7 @@ function insert(type, click, id) {
          var tableId = "CheckBox_" + count;
          var questionId = tableId + ".Question";
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【多选题】</td></tr></thead>" + 
-            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑问题：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('CheckBox', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
@@ -160,7 +160,7 @@ function insert(type, click, id) {
          var tableId = "RadioMatrix_" + count;
          var questionId = tableId + ".Question";
          var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【矩阵选择】</td></tr></thead>" + 
-            "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" + 
+            "<tbody><tr id=\"" + questionId + "\"><td>编辑问题：<input name=\"" + questionId + "\"></td>" + 
                "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('RadioMatrix', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
@@ -193,7 +193,7 @@ function insert(type, click, id) {
       var tableId = "BlankToFillIn_" + count;
       var questionId = tableId + ".Question";
       var tableHtml = "<table id=\"" + tableId + "\"><thead><tr><td>【填空题】</td></tr></thead>" + 
-         "<tbody><tr id=\"" + questionId + "\"><td>编辑题目：<input name=\"" + questionId + "\"></td>" +
+         "<tbody><tr id=\"" + questionId + "\"><td>编辑问题：<input name=\"" + questionId + "\"></td>" +
             "<td><img class=\"plus\" src=\"images\\plus.png\" onClick=\"insert('BlankToFillIn', 'question', '" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'plus')\" onmouseout=\"out('" + questionId + "', 'plus')\"></td>" +
             "<td><img class=\"minus\" src=\"images\\minus.png\" onClick=\"deleteById('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'minus')\" onmouseout=\"out('" + questionId + "', 'minus')\"></td>" +
                "<td><img class=\"minus\" src=\"images\\up.png\" onClick=\"moveUp('" + tableId + "')\" onmouseover=\"over('" + questionId + "', 'up')\" onmouseout=\"out('" + questionId + "', 'up')\"></td>" +
